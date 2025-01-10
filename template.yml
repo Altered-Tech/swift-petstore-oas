@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Template for PetStore
+
+Globals:
+  Function:
+    Timeout: 60
+    CodeUri: .aws-sam/build/PetStore
+    Handler: swift.bootstrap
+    Runtime: provided.al2
+    MemorySize: 512
+    Architectures:
+      - arm64
+
+Resources:
+  # Lambda function
+  PetStore:
+    Type: AWS::Serverless::Function
+    Properties:
+      Events:
+        # pass through all HTTP verbs and paths
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+    Metadata:
+      BuildMethod: makefile
+
+# print API endpoint and name of database table
+Outputs:
+  SwiftAPIEndpoint:
+    Description: "API Gateway endpoint URL for your application"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com"

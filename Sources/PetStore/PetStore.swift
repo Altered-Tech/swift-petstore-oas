@@ -4,34 +4,52 @@ import OpenAPILambda
 
 @main
 struct PetStore: APIProtocol, OpenAPILambdaHttpApi {
-    func replyGreeting(_ input: Operations.replyGreeting.Input) async throws -> Operations.replyGreeting.Output {
-        let name = input.path.name
-        return .ok(.init(body: .json(Components.Schemas.Greet(name: name))))
+    
+    init(transport: OpenAPILambdaTransport) throws {
+        let printingMiddleware = PrintingMiddleware()
+        let errorMiddleware = ErrorHandlingMiddleware()
+        try self.registerHandlers(on: transport, middlewares: [printingMiddleware, errorMiddleware])
     }
     
-    
-    func uploadFile(_ input: Operations.uploadFile.Input) async throws -> Operations.uploadFile.Output {
-        return .ok(.init(body: .json(.init())))
-    }
+//    func uploadFile(_ input: Operations.uploadFile.Input) async throws -> Operations.uploadFile.Output {
+//        switch input.body {
+//        case .none:
+//            return .badRequest(.init())
+//        case .some(_):
+//            return .ok(.init(body: .json(.init())))
+//        }
+//    }
     
     func deletePet(_ input: Operations.deletePet.Input) async throws -> Operations.deletePet.Output {
-        let petId = input.path.petId
+        var pets2: [Components.Schemas.Pet] = pets
+        var petId: Int64?
+        if let id: Int64 = Int64(exactly: input.path.petId) {
+            petId = id
+        } else {
+            return .badRequest(.init())
+        }
         
-        if petId < 0 {
+        if petId! < 0 {
             return .badRequest(.init())
         }
         guard let index = pets.firstIndex(where: { $0.id == petId }) else {
             return .badRequest(.init())
         }
-        pets.remove(at: index)
+        pets2.remove(at: index)
         
         return .ok(.init())
     }
     
     func getPetById(_ input: Operations.getPetById.Input) async throws -> Operations.getPetById.Output {
-        let petId = input.path.petId
+        print("type: \(type(of: input.path.petId))")
+        var petId: Int64?
+        if let id: Int64 = Int64(exactly: input.path.petId) {
+            petId = id
+        } else {
+            return .badRequest(.init())
+        }
         
-        if petId < 0 {
+        if petId! < 0 {
             return .badRequest(.init())
         }
         
@@ -72,9 +90,11 @@ struct PetStore: APIProtocol, OpenAPILambdaHttpApi {
     }
     
     func updatePet(_ input: Operations.updatePet.Input) async throws -> Operations.updatePet.Output {
+        var pets2: [Components.Schemas.Pet] = pets
         let requestBody: Components.Schemas.Pet
         switch input.body {
-            case .json(let json): requestBody = json
+            case .json(let json):
+                requestBody = json
         }
         
         guard let id = requestBody.id, id > 0 else {
@@ -86,12 +106,12 @@ struct PetStore: APIProtocol, OpenAPILambdaHttpApi {
         }
         
         do {
-            pets[index] = requestBody
+            pets2[index] = requestBody
         } catch {
             return .unprocessableContent(.init())
         }
         
-        return .ok(.init(body: .json(pets[index])))
+        return .ok(.init(body: .json(pets2[index])))
     }
     
     func addPet(_ input: Operations.addPet.Input) async throws -> Operations.addPet.Output {
@@ -99,16 +119,13 @@ struct PetStore: APIProtocol, OpenAPILambdaHttpApi {
         switch input.body {
             case .json(let json): requestBody = json
         }
-        
-        pets.append(requestBody)
+        var pets2: [Components.Schemas.Pet] = pets
+        pets2.append(requestBody)
         
         return .ok(.init(body: .json(requestBody)))
     }
     
-    init(transport: OpenAPILambdaTransport) throws {
-        try self.registerHandlers(on: transport)
-    }
-    
+
 }
 
 let categories: [Components.Schemas.Category] = [
@@ -127,7 +144,7 @@ let tags: [Components.Schemas.Tag] = [
     .init(id: 5, name: "Funny")
 ]
 
-nonisolated(unsafe) var pets: [Components.Schemas.Pet] = [
+let pets: [Components.Schemas.Pet] = [
     .init(id: 0, name: "ArloKitty", category: categories[0], photoUrls: ["http://images4.fanpop.com/image/photos/16000000/Beautiful-Cat-cats-16096437-1280-800.jpg"], tags: [tags[1]], status: .sold),
     .init(id: 1, name: "Arlo", category: categories[0], photoUrls: ["http://images4.fanpop.com/image/photos/16000000/Beautiful-Cat-cats-16096437-1280-800.jpg"], tags: [tags[1]], status: .available),
     .init(id: 2, name: "Kida", category: categories[0], photoUrls: ["https://dogsandcatshq.com/wp-content/uploads/2020/07/Russian-Blue-Cat-1-scaled.jpg"], tags: [tags[0]], status: .pending),
