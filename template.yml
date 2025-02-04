@@ -1,11 +1,11 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-Description: SAM Template for PetStore
+Description: SAM Template for petstore
 
+# create all Lambda functions with a 60 second timeout
 Globals:
   Function:
     Timeout: 60
-    CodeUri: .aws-sam/build/PetStore
     Handler: swift.bootstrap
     Runtime: provided.al2
     MemorySize: 512
@@ -13,20 +13,62 @@ Globals:
       - arm64
 
 Resources:
-  # Lambda function
-  PetStore:
+
+  GetPetById:
     Type: AWS::Serverless::Function
     Properties:
+      CodeUri: .build/plugins/AWSLambdaPackager/outputs/AWSLambdaPackager/GetPetById/GetPetById.zip
       Events:
-        # pass through all HTTP verbs and paths
         Api:
           Type: HttpApi
           Properties:
-            Path: /{proxy+}
-            Method: ANY
+            Method: get
+            Path: /pet/{petId}
 
-    Metadata:
-      BuildMethod: makefile
+  GetPetsByTags:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .build/plugins/AWSLambdaPackager/outputs/AWSLambdaPackager/GetPetsByTags/GetPetsByTags.zip
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Method: get
+            Path: /pet/findByTags
+
+  GetPetsByStatus:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .build/plugins/AWSLambdaPackager/outputs/AWSLambdaPackager/GetPetsByStatus/GetPetsByStatus.zip
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Method: get
+            Path: /pet/findByStatus
+
+  UpdatePet:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .build/plugins/AWSLambdaPackager/outputs/AWSLambdaPackager/UpdatePet/UpdatePet.zip
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Method: put
+            Path: /pet
+
+  AddPet:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .build/plugins/AWSLambdaPackager/outputs/AWSLambdaPackager/AddPet/AddPet.zip
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Method: post
+            Path: /pet
+
 
 # print API endpoint and name of database table
 Outputs:

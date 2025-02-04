@@ -1,0 +1,7 @@
+generate:
+  - types
+  - server
+
+filter:
+  operations:
+  - getPetById

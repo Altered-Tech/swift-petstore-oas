@@ -102,15 +102,10 @@ paths:
         - name: status
           in: query
           description: Status values that need to be considered for filter
-          required: false
+          required: true
           explode: true
           schema:
-            type: string
-            default: available
-            enum:
-              - available
-              - pending
-              - sold
+            $ref: '#/components/schemas/PetStatus'
       responses:
         '200':
           description: successful operation
@@ -192,79 +187,6 @@ paths:
           description: Internal Server Error
         '502':
           description: Bad Gateway
-    delete:
-      tags:
-        - pet
-      summary: Deletes a pet
-      description: delete a pet
-      operationId: deletePet
-      parameters:
-        - name: api_key
-          in: header
-          description: ''
-          required: false
-          schema:
-            type: string
-        - name: petId
-          in: path
-          description: Pet id to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Pet removed
-        '400':
-          description: Invalid pet value
-        '404':
-          description: Not Found
-        '500':
-          description: Internal Server Error
-        '502':
-          description: Bad Gateway
-#  /pet/{petId}/uploadImage:
-#    post:
-#      tags:
-#        - pet
-#      summary: uploads an image
-#      description: ''
-#      operationId: uploadFile
-#      parameters:
-#        - name: petId
-#          in: path
-#          description: ID of pet to update
-#          required: true
-#          schema:
-#            type: integer
-#            format: int64
-#        - name: additionalMetadata
-#          in: query
-#          description: Additional Metadata
-#          required: false
-#          schema:
-#            type: string
-#      requestBody:
-#        content:
-#          application/octet-stream:
-#            schema:
-#              type: string
-#              format: binary
-#      responses:
-#        '200':
-#          description: successful operation
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/ApiResponse'
-#        '400':
-#          description: Bad Request
-#        '404':
-#          description: Not Found
-#        '500':
-#          description: Internal Server Error
-#        '502':
-#          description: Bad Gateway
 components:
   schemas:
     Category:
@@ -289,6 +211,7 @@ components:
       required:
         - name
         - photoUrls
+        - status
       type: object
       properties:
         id:
@@ -309,12 +232,7 @@ components:
           items:
             $ref: '#/components/schemas/Tag'
         status:
-          type: string
-          description: pet status in the store
-          enum:
-            - available
-            - pending
-            - sold
+          $ref: '#/components/schemas/PetStatus'
     ApiResponse:
       type: object
       properties:
@@ -325,6 +243,13 @@ components:
           type: string
         message:
           type: string
+    PetStatus:
+      type: string
+      description: pet status in the store
+      enum:
+        - available
+        - pending
+        - sold
   requestBodies:
     Pet:
       description: Pet object that needs to be added to the store

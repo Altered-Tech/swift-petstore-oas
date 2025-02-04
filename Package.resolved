@@ -1,13 +1,13 @@
 {
-  "originHash" : "bf5392d27429ac247fd98b1aa3814dabd2f73a2d9980c2327ecf881e3c71a148",
+  "originHash" : "b024f389609e0bc76c5d17d0d97448c1383d5a2dcde8613b572309b53205dfe2",
   "pins" : [
     {
       "identity" : "openapikit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattpolzin/OpenAPIKit",
       "state" : {
-        "revision" : "5b5ee49624dda5b3e3b85aff184f44a007862fb7",
-        "version" : "3.3.0"
+        "revision" : "749ceba9a6e91d40081f27996fd91fd3de9a8dfe",
+        "version" : "3.4.0"
       }
     },
     {
@@ -58,7 +58,7 @@
     {
       "identity" : "swift-collections",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-collections.git",
+      "location" : "https://github.com/apple/swift-collections",
       "state" : {
         "revision" : "671108c96644956dddcd89dd59c203dcdb36cec7",
         "version" : "1.1.4"
@@ -87,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio.git",
       "state" : {
-        "revision" : "dca6594f65308c761a9c409e09fbf35f48d50d34",
-        "version" : "2.77.0"
+        "revision" : "dff45738d84a53dbc8ee899c306b3a7227f54f89",
+        "version" : "2.80.0"
       }
     },
     {
@@ -103,10 +103,10 @@
     {
       "identity" : "swift-openapi-generator",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-openapi-generator.git",
+      "location" : "https://github.com/apple/swift-openapi-generator",
       "state" : {
-        "revision" : "ad7f0e73246f5083733dbc025097fcdf0fbee2a1",
-        "version" : "1.6.0"
+        "revision" : "84b693f9d0559dc488e691edb4837bafbce2aaea",
+        "version" : "1.7.0"
       }
     },
     {
@@ -121,10 +121,10 @@
     {
       "identity" : "swift-openapi-runtime",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-openapi-runtime.git",
+      "location" : "https://github.com/apple/swift-openapi-runtime",
       "state" : {
-        "revision" : "5e119a3d52dde0229312ed586be99c666c6b6f64",
-        "version" : "1.7.0"
+        "revision" : "23146bc8710ac5e57abb693113f02dc274cf39b6",
+        "version" : "1.8.0"
       }
     },
     {
