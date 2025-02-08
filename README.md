@@ -1,14 +1,16 @@
 # Petstore OpenAPI/SAM
 
-This application illustrates how to deploy a Server-Side Swift workload on AWS using the [AWS Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/) toolkit. The workload is a REST API for tracking items in a database. It deploys the API using Amazon API Gateway. The API methods store and retrieve data in a Amazon DynamoDB database using AWS Lambda functions.
+This application illustrates how to utilize swift-openapi-generator with swift-openapi lambda to create multiple functions definitions in the SAM Template. It is available to deploy a Server-Side Swift workload on AWS using the [AWS Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/) toolkit. It deploys the API using Amazon API Gateway. 
 
 ## Architecture
 
 ![Architecture](images/architecture.png)
 
+- OpenAPI Spec to define our API
 - Amazon API Gateway receives API requests
 - API Gateway invokes Lambda functions to process POST, PUT, GET, and DELETE events
-- Lambda functions written in Swift use the [AWS SDK for Swift](https://aws.amazon.com/sdk-for-swift/) and the [Swift AWS Lambda Runtime](https://github.com/swift-server/swift-aws-lambda-runtime) to retrieve and save items to the database
+- Lambda functions written in Swift use the [AWS SDK for Swift](https://aws.amazon.com/sdk-for-swift/) and the [Swift AWS Lambda Runtime](https://github.com/swift-server/swift-aws-lambda-runtime) to retrieve and save items.
+- Schemathesis to contract validate that our server behaves as we believe it should against our OpenAPI spec in spec-driven development.
 
 ## Prerequisites
 
@@ -74,7 +76,7 @@ Use cURL or a tool such as [Postman](https://www.postman.com/) to interact with 
 _Replace {Tag} with the tag of the pets you want to retrieve_ 
 
 ```bash
-curl https://[your-api-endpoint]/pet/findByTag\?tag\={Tag}
+curl -X GET https://[your-api-endpoint]/pet/findByTag\?tag\={Tag}
 ```
 
 **Retrieve all Pets by Status**
@@ -82,7 +84,7 @@ curl https://[your-api-endpoint]/pet/findByTag\?tag\={Tag}
 _Replace {Status} with the status of the pets you want to retrieve (sold, available, pending, none)_ 
 
 ```bash
-curl https://[your-api-endpoint]/pet/findByStatus\?status\={Status}
+curl -X GET https://[your-api-endpoint]/pet/findByStatus\?status\={Status}
 ```
 
 **Retrieve a specific Pet**
@@ -90,23 +92,23 @@ curl https://[your-api-endpoint]/pet/findByStatus\?status\={Status}
 _Replace {Pet ID} with the id of the pet you want to retrieve_
 
 ```bash
-curl https://[your-api-endpoint]/pet/{Pet ID}
+curl -X GET https://[your-api-endpoint]/pet/{Pet ID}
 ```
 
 **Update a specific Pet**
 
-_Replace {Pet ID} with the id of the pet you want to retrieve_
+_Replace json of the pet with the id of the pet you want to update_
 
 ```bash
-curl https://[your-api-endpoint]/pet
+curl -X PUT https://[your-api-endpoint]/pet '{"id": 1, "name": "bubbles","status": "sold","photoUrls": ["example.com"]}' --header "Content-Type: application/json"
 ```
 
 **Add a Pet**
 
-_Replace {Pet ID} with the id of the pet you want to retrieve_
+_Replace json with pet object to be added_
 
 ```bash
-curl https://[your-api-endpoint]/pet 
+curl -x POST https://[your-api-endpoint]/pet '{"name": "bubbles","status": "sold","photoUrls": ["example.com"]}' --header "Content-Type: application/json"
 ```
 ### Cleanup
 
@@ -126,12 +128,50 @@ SAM also allows you to execute your Lambda functions locally on your development
 DOCKER_HOST=unix://$HOME/.docker/run/docker.sock sam local start-api --template template.yml --disable-authorizer
 ```
 
-**Schemathesis**
+**Schemathesis for Contract Validation**
 
 ```
 schemathesis run --checks all --generation-allow-x00=false \
-./openapi.yaml --base-url http://127.0.0.1:3000/ \
+./Sources/openapi.yaml --base-url http://127.0.0.1:3000/ \
 --hypothesis-seed=113557048121377334166457906999960982618
 ```
 
+**Retrieve all Pets by Tags**
 
+_Replace {Tag} with the tag of the pets you want to retrieve_ 
+
+```bash
+curl -X GET http://127.0.0.1:3000/pet/findByTag\?tag\={Tag}
+```
+
+**Retrieve all Pets by Status**
+
+_Replace {Status} with the status of the pets you want to retrieve (sold, available, pending, none)_ 
+
+```bash
+curl -X GET http://127.0.0.1:3000/pet/findByStatus\?status\={Status}
+```
+
+**Retrieve a specific Pet**
+
+_Replace {Pet ID} with the id of the pet you want to retrieve_
+
+```bash
+curl -X GET http://127.0.0.1:3000/pet/{Pet ID}
+```
+
+**Update a specific Pet**
+
+_Replace json of the pet with the id of the pet you want to update_
+
+```bash
+curl -X PUT http://127.0.0.1:3000/pet '{"id": 1, "name": "bubbles","status": "sold","photoUrls": ["example.com"]}' --header "Content-Type: application/json"
+```
+
+**Add a Pet**
+
+_Replace json with pet object to be added_
+
+```bash
+curl -x POST http://127.0.0.1:3000/pet '{"name": "bubbles","status": "sold","photoUrls": ["example.com"]}' --header "Content-Type: application/json"
+```

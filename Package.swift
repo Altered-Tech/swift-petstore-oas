@@ -10,6 +10,8 @@ let package = Package(
         .executable(name: "GetPetById", targets: ["GetPetById"]),
         .executable(name: "GetPetsByStatus", targets: ["GetPetsByStatus"]),
         .executable(name: "GetPetsByTags", targets: ["GetPetsByTags"]),
+        .executable(name: "UpdatePet", targets: ["UpdatePet"]),
+        .executable(name: "AddPet", targets: ["AddPet"]),
     ],
     dependencies: [
         .package(url: "https://github.com/swift-server/swift-aws-lambda-runtime.git", from: "1.0.0-alpha.1"),
@@ -39,6 +41,8 @@ let package = Package(
             )
           ]
         ),
+        .testTarget(name: "GetPetByIdTests", dependencies: ["GetPetById"]),
+        
         .executableTarget(
           name: "GetPetsByStatus",
           dependencies: [
@@ -59,6 +63,8 @@ let package = Package(
             )
           ]
         ),
+        .testTarget(name: "GetPetsByStatusTests", dependencies: ["GetPetsByStatus"]),
+        
         .executableTarget(
           name: "GetPetsByTags",
           dependencies: [
@@ -79,6 +85,8 @@ let package = Package(
             )
           ]
         ),
+        .testTarget(name: "GetPetsByTagsTests", dependencies: ["GetPetsByTags"]),
+        
         .executableTarget(
           name: "UpdatePet",
           dependencies: [
@@ -99,6 +107,8 @@ let package = Package(
             )
           ]
         ),
+        .testTarget(name: "UpdatePetTests", dependencies: ["UpdatePet"]),
+        
         .executableTarget(
           name: "AddPet",
           dependencies: [
@@ -119,6 +129,7 @@ let package = Package(
             )
           ]
         ),
+        .testTarget(name: "AddPetTests", dependencies: ["AddPet"])
     ]
 )
 
