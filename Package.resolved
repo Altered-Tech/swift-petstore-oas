@@ -1,5 +1,5 @@
 {
-  "originHash" : "b024f389609e0bc76c5d17d0d97448c1383d5a2dcde8613b572309b53205dfe2",
+  "originHash" : "476dc62049a2564c8ab48b296762e762d902e30f330759b3a0dfab608d114437",
   "pins" : [
     {
       "identity" : "openapikit",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-algorithms",
       "state" : {
-        "revision" : "f6919dfc309e7f1b56224378b11e28bab5bccc42",
-        "version" : "1.2.0"
+        "revision" : "87e50f483c54e6efd60e885f7f5aa946cee68023",
+        "version" : "1.2.1"
       }
     },
     {
@@ -87,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio.git",
       "state" : {
-        "revision" : "dff45738d84a53dbc8ee899c306b3a7227f54f89",
-        "version" : "2.80.0"
+        "revision" : "c51907a839e63ebf0ba2076bba73dd96436bd1b9",
+        "version" : "2.81.0"
       }
     },
     {
