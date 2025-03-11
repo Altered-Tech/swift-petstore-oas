@@ -51,4 +51,4 @@ jobs:
 
       - name: Lint openapi spec
         run: |
-          go run github.com/daveshanley/vacuum@${{ inputs.vacuum-version }} report ${{ inputs.openapi-file }}
+          go run github.com/daveshanley/vacuum@${{ inputs.vacuum-version }} lint ${{ inputs.openapi-file }}
