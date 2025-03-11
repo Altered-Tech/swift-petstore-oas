@@ -11,16 +11,12 @@ on:
 
 jobs:
   lint-openapi:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Lint OpenAPI
-        uses: ./.github/actions/openapi-lint
-        with:
-          openapi-file: Sources/openapi.yaml
-          vacuum-version: v0.16.3
-          go-version: 1.24.0
+    name: Lint OpenAPI
+    uses: ./.github/workflows/openapi-lint.yaml
+    with:
+      openapi-file: Sources/openapi.yaml
+      vacuum-version: v0.16.3
+      go-version: 1.24.0
   
   validate-openapi:
     runs-on: ubuntu-latest
