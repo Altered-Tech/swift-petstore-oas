@@ -23,11 +23,11 @@ jobs:
   
   validate-openapi:
     name: Validate OpenAPI
-    runs-on: macos-14
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: SwiftyLab/setup-swift@latest
+      - uses: SwiftyLab/setup-swift@v1.9.1
         with:
           swift-version: ${{ env.swift-version }}
 
