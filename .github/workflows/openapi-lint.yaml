@@ -1,0 +1,50 @@
+name: OpenAPI Lint and Report
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      openapi-file:
+        required: true
+        description: 'Path to the OpenAPI spec file'
+      vacuum-version:
+        required: true
+        description: 'Vacuum version to use'
+      go-version:
+        required: true
+        description: 'Go version to use'
+
+jobs:
+  lint:
+    name: Lint OpenAPI Spec
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ inputs.go-version }}
+
+      - name: Create report
+        run: |
+          go run github.com/daveshanley/vacuum@${{ inputs.vacuum-version }} report ${{ inputs.openapi-file }}
+
+      - name: Upload vacuum report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vacuum-report
+          path: vacuum-report-*.json
+          retention-days: 1
+      
+      - name: Pretty Vacuum Report
+        run: |
+          python3 scripts/vacuum_pretty_report.py
+      
+      - name: Upload vacuum pretty report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vacuum-pretty-report
+          path: vacuum_pretty_report_output.txt
+          retention-days: 1
+
+      - name: Lint openapi spec
+        run: |
+          go run github.com/daveshanley/vacuum@${{ inputs.vacuum-version }} report ${{ inputs.openapi-file }}
