@@ -11,7 +11,7 @@ let package = Package(
         .executable(name: "GetPetsByStatus", targets: ["GetPetsByStatus"]),
         .executable(name: "GetPetsByTags", targets: ["GetPetsByTags"]),
         .executable(name: "UpdatePet", targets: ["UpdatePet"]),
-        .executable(name: "AddPet", targets: ["AddPet"]),
+        // .executable(name: "AddPet", targets: ["AddPet"]),
     ],
     dependencies: [
         .package(url: "https://github.com/swift-server/swift-aws-lambda-runtime.git", from: "1.0.0-alpha.1"),
@@ -109,27 +109,27 @@ let package = Package(
         ),
         .testTarget(name: "UpdatePetTests", dependencies: ["UpdatePet"]),
         
-        .executableTarget(
-          name: "AddPet",
-          dependencies: [
-            .product(name: "AWSLambdaRuntime", package: "swift-aws-lambda-runtime"),
-            .product(name: "AWSLambdaEvents", package: "swift-aws-lambda-events"),
-            .product(name: "OpenAPIRuntime",package: "swift-openapi-runtime"),
-            .product(name: "OpenAPILambda",package: "swift-openapi-lambda"),
-          ],
-          path: "Sources/Pet/AddPet",
-          resources: [
-            .copy("../../openapi.yaml"),
-            .copy("openapi-generator-config.yaml")
-          ],
-          plugins: [
-            .plugin(
-                name: "OpenAPIGenerator",
-                package: "swift-openapi-generator"
-            )
-          ]
-        ),
-        .testTarget(name: "AddPetTests", dependencies: ["AddPet"])
+        // .executableTarget(
+        //   name: "AddPet",
+        //   dependencies: [
+        //     .product(name: "AWSLambdaRuntime", package: "swift-aws-lambda-runtime"),
+        //     .product(name: "AWSLambdaEvents", package: "swift-aws-lambda-events"),
+        //     .product(name: "OpenAPIRuntime",package: "swift-openapi-runtime"),
+        //     .product(name: "OpenAPILambda",package: "swift-openapi-lambda"),
+        //   ],
+        //   path: "Sources/Pet/AddPet",
+        //   resources: [
+        //     .copy("../../openapi.yaml"),
+        //     .copy("openapi-generator-config.yaml")
+        //   ],
+        //   plugins: [
+        //     .plugin(
+        //         name: "OpenAPIGenerator",
+        //         package: "swift-openapi-generator"
+        //     )
+        //   ]
+        // ),
+        // .testTarget(name: "AddPetTests", dependencies: ["AddPet"])
     ]
 )
 
