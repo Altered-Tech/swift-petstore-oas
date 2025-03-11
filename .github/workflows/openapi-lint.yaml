@@ -5,12 +5,15 @@ on:
     inputs:
       openapi-file:
         required: true
+        type: string
         description: 'Path to the OpenAPI spec file'
       vacuum-version:
         required: true
+        type: string
         description: 'Vacuum version to use'
       go-version:
         required: true
+        type: string
         description: 'Go version to use'
 
 jobs:
@@ -19,6 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-go@v5
         with:
           go-version: ${{ inputs.go-version }}
