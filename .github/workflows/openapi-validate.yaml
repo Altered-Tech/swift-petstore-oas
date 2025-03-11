@@ -20,12 +20,12 @@ jobs:
   
   validate-openapi:
     name: Validate OpenAPI
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
 
       - name: Build Swift package archive
-        run: swift package --vv archive --allow-network-connections docker
+        run: swift package archive --allow-network-connections docker
       
       - name: Ensure SAM is installed
         uses: aws-actions/setup-sam@v2
