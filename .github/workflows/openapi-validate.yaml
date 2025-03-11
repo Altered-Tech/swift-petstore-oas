@@ -32,7 +32,7 @@ jobs:
           swift-version: ${{ env.swift-version }}
 
       - name: Build Swift package archive
-        run: swift package archive --allow-network-connections docker
+        run: swift package archive --verbose --allow-network-connections docker
       
       - name: Ensure SAM is installed
         uses: aws-actions/setup-sam@v2
