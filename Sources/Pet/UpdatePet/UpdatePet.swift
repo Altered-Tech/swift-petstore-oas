@@ -25,11 +25,15 @@ struct UpdatePet: APIProtocol, OpenAPILambdaHttpApi {
         }
         
         guard let id = requestBody.id, id > 0 else {
-            return .badRequest(.init())
+            return .badRequest(.init(body: .json(.init(
+                message: "Bad Request: Pet ID must be provided or greater than 0.",
+                code: 400))))
         }
         
         guard let index = pets.firstIndex(where: { $0.id == requestBody.id }) else {
-            return .notFound(.init())
+            return .notFound(.init(body: .json(.init(
+                message: "Not Found: No pet found with ID \(String(describing: requestBody.id))",
+                code: 404))))
         }
         
         pets[index] = requestBody

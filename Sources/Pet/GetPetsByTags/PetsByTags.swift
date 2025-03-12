@@ -17,7 +17,11 @@ struct GetPetsByTags: APIProtocol, OpenAPILambdaHttpApi {
     }
     
     func findPetsByTags(_ input: Operations.findPetsByTags.Input) async throws -> Operations.findPetsByTags.Output {
-        guard let inputTags = input.query.tags else { return .badRequest(.init()) }
+        guard let inputTags = input.query.tags else {
+            return .badRequest(.init(body: .json(.init(
+                message: "Bad Request: Missing required parameter 'tags'",
+                code: 400))))
+        }
         //Forcing unwrap
         let matchingTags = tagsExample.filter { inputTags.contains( $0.name! ) }
         let petsWithTags: [Components.Schemas.Pet] = petsExample.filter { pet in

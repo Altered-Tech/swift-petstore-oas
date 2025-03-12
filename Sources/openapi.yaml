@@ -29,6 +29,7 @@ tags:
     externalDocs:
       description: Find out more
       url: http://swagger.io
+      
 paths:
   /pet:
     put:
@@ -45,26 +46,47 @@ paths:
               $ref: '#/components/schemas/Pet'
         required: true
       responses:
-        '200':
+        '200': &200Pet
           description: Successful operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-        '422':
+        '400': &400Error
+          description: Bad Request Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404': &404Error
+          description: Not found Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422': &422Error
           description: Validation exception
-        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500': &500Error
           description: Internal Server Error
-        '502':
-          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '502': &502Error
+          description: Bad Gateway Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
     post:
       tags:
         - pet
-      summary: Add a new pet to the store
+      summary: Add a new pet to the store endpoint
       description: Add a new pet to the store
       operationId: addPet
       requestBody:
@@ -75,23 +97,14 @@ paths:
               $ref: '#/components/schemas/Pet'
         required: true
       responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid input
-        '404':
-          description: Not Found
-        '422':
-          description: Validation exception
-        '500':
-          description: Internal Server Error
-        '502':
-          description: Bad Gateway
-  /pet/findByStatus:
+        '200': *200Pet
+        '400': *400Error
+        '404': *404Error
+        '422': *422Error
+        '500': *500Error
+        '502': *502Error
+        
+  /pet/findbystatus:
     get:
       tags:
         - pet
@@ -107,23 +120,18 @@ paths:
           schema:
             $ref: '#/components/schemas/PetStatus'
       responses:
-        '200':
+        '200': &200Pets
           description: successful operation
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid status value
-        '404':
-          description: Not Found
-        '500':
-          description: Internal Server Error
-        '502':
-          description: Bad Gateway
-  /pet/findByTags:
+                  $ref: '#/components/schemas/Pets'
+        '400': *400Error
+        '404': *404Error
+        '500': *500Error
+        '502': *502Error
+        
+  /pet/findbytags:
     get:
       tags:
         - pet
@@ -133,30 +141,25 @@ paths:
       parameters:
         - name: tags
           in: query
+          example:
+            - funny
           description: Tags to filter by
           required: false
           explode: true
           schema:
             type: array
+            example:
+              - funny
+              - smart
             items:
               type: string
       responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid tag value
-        '404':
-          description:
-        '500':
-          description: Internal Server Error
-        '502':
-          description: Bad Gateway
+        '200': *200Pets
+        '400': *400Error
+        '404': *404Error
+        '500': *500Error
+        '502': *502Error
+        
   /pet/{petId}:
     get:
       tags:
@@ -173,24 +176,37 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-        '500':
-          description: Internal Server Error
-        '502':
-          description: Bad Gateway
+        '200': *200Pet
+        '400': *400Error
+        '404': *404Error
+        '500': *500Error
+        '502': *502Error
+        
 components:
   schemas:
-    Category:
+    Error:
+      description: Error message format
       type: object
+      example:
+        message: I am a teapot
+        code: 412
+      required:
+        - message
+        - code
+      properties:
+        message:
+          type: string
+          example: teapot
+        code:
+          type: integer
+          example: 412
+          
+    Category:
+      description: What kind of pet it is
+      type: object
+      example:
+        id: 0
+        name: Dog
       properties:
         id:
           type: integer
@@ -199,20 +215,61 @@ components:
         name:
           type: string
           example: Dogs
+          
     Tag:
+      description: A quality of the pet
       type: object
+      example:
+        id: 0
+        name: funny
       properties:
         id:
           type: integer
           format: int64
         name:
           type: string
+    
+    Pets:
+      description: A list of Pet objects
+      type: array
+      example:
+        - id: 0
+          name: Koda
+          status: sold
+          tags:
+            - id: 0
+              name: funny
+            - id: 1
+              name: smart
+          photoUrls:
+            - "https://example.com"
+          category:
+            id: 0
+            name: Dog
+      items:
+        $ref: '#/components/schemas/Pet'
+          
     Pet:
+      description: The pet object that is defined.
       required:
         - name
         - photoUrls
         - status
       type: object
+      example:
+        id: 0
+        name: Koda
+        status: sold
+        tags:
+          - id: 0
+            name: funny
+          - id: 1
+            name: smart
+        photoUrls:
+          - "https://example.com"
+        category:
+          id: 0
+          name: Dog
       properties:
         id:
           type: integer
@@ -233,27 +290,12 @@ components:
             $ref: '#/components/schemas/Tag'
         status:
           $ref: '#/components/schemas/PetStatus'
-    ApiResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        type:
-          type: string
-        message:
-          type: string
+          
     PetStatus:
       type: string
-      description: pet status in the store
+      description: Pet status in the store
+      example: sold
       enum:
         - available
         - pending
         - sold
-  requestBodies:
-    Pet:
-      description: Pet object that needs to be added to the store
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Pet'
