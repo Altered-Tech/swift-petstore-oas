@@ -3,7 +3,11 @@ import glob
 import os
 
 def format_vacuum(data):
-    results = data["resultSet"]["results"]
+    try:
+        results = data["resultSet"]["results"]
+    except:
+        print("No results, probably have a clean report. Nice!")
+        return
     columns = ["severity", "line", "ruleId", "message"]
     categorized = {"error": [], "warn": [], "info": [], "other": []}
 
