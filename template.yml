@@ -58,16 +58,16 @@ Resources:
             Method: put
             Path: /pet
 
-  # AddPet:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     CodeUri: .build/plugins/AWSLambdaPackager/outputs/AWSLambdaPackager/AddPet/AddPet.zip
-  #     Events:
-  #       Api:
-  #         Type: HttpApi
-  #         Properties:
-  #           Method: post
-  #           Path: /pet
+   AddPet:
+     Type: AWS::Serverless::Function
+     Properties:
+       CodeUri: .build/plugins/AWSLambdaPackager/outputs/AWSLambdaPackager/AddPet/AddPet.zip
+       Events:
+         Api:
+           Type: HttpApi
+           Properties:
+             Method: post
+             Path: /pet
 
 
 # print API endpoint and name of database table
