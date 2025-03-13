@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "swift-sam-petstore",
-    platforms: [.macOS(.v14)],
+    platforms: [.macOS(.v15)],
     products: [
         .executable(name: "GetPetById", targets: ["GetPetById"]),
         .executable(name: "GetPetsByStatus", targets: ["GetPetsByStatus"]),
@@ -14,7 +14,7 @@ let package = Package(
         .executable(name: "AddPet", targets: ["AddPet"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-server/swift-aws-lambda-runtime.git", from: "1.0.0-alpha.3"),
+        .package(url: "https://github.com/swift-server/swift-aws-lambda-runtime.git", branch: "main"),
         .package(url: "https://github.com/swift-server/swift-aws-lambda-events.git", from: "0.1.0"),
         .package(url: "https://github.com/apple/swift-openapi-generator", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-openapi-runtime", from: "1.0.0"),

@@ -11,11 +11,11 @@ import OpenAPILambda
 
 @main
 struct GetPetById: APIProtocol, OpenAPILambdaHttpApi {
-    
+
     init(transport: OpenAPILambdaTransport) throws {
         try self.registerHandlers(on: transport, middlewares: [ErrorHandlingMiddleware()])
     }
-    
+
     func getPetById(_ input: Operations.getPetById.Input) async throws -> Operations.getPetById.Output {
         print("In the function")
         var petId: Int64?
@@ -26,17 +26,17 @@ struct GetPetById: APIProtocol, OpenAPILambdaHttpApi {
                 message: "Bad Request: Pet ID must be a positive integer",
                 code: 400))))
         }
-        
+
         if petId! < 0 {
             return .badRequest(.init(body: .json(.init(
                 message: "Bad Request: Pet ID must not be less than zero",
                 code: 400))))
         }
-        
+
         guard let pet: Components.Schemas.Pet = petsExample.first(where: { $0.id == petId }) else { return .notFound(.init(body: .json(.init(
             message: "Not Found: Pet not found",
             code: 404)))) }
-        
+
         return .ok(.init(body: .json(pet)))
     }
 }

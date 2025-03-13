@@ -15,14 +15,14 @@ import OpenAPIRuntime
 extension DecodingError: @retroactive HTTPResponseConvertible {
     public var httpStatus: HTTPResponse.Status {
         switch self {
-        
-        case .typeMismatch(_, _):
+
+        case .typeMismatch:
                 .badRequest
-        case .valueNotFound(_, _):
+        case .valueNotFound:
                 .badRequest
-        case .keyNotFound(_, _):
+        case .keyNotFound:
                 .notFound
-        case .dataCorrupted(_):
+        case .dataCorrupted:
                 .badRequest
         @unknown default:
                 .badRequest

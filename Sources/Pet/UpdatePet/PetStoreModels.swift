@@ -5,7 +5,6 @@
 //  Created by Michael Einreinhof on 2/4/25.
 //
 
-
 let categoriesExample: [Components.Schemas.Category] = [
     .init(id: 1, name: "Cat"),
     .init(id: 2, name: "Dog"),
