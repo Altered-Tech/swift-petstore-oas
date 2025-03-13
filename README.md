@@ -2,9 +2,11 @@
 
 This application illustrates how to utilize swift-openapi-generator with swift-openapi lambda to create multiple functions definitions in the SAM Template. It is available to deploy a Server-Side Swift workload on AWS using the [AWS Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/) toolkit. It deploys the API using Amazon API Gateway. 
 
-## Architecture
+## Swagger UI Page
 
-![Architecture](images/architecture.png)
+https://altered-tech.github.io/swift-petstore-oas/
+
+## Architecture
 
 - OpenAPI Spec to define our API
 - Amazon API Gateway receives API requests
