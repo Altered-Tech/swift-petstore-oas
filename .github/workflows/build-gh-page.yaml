@@ -26,6 +26,6 @@ jobs:
           npm_config_yes=true npx openapi-to-postmanv2 -s Sources/openapi.yaml -o collection.json -p
       - name: Commit Docs and Postman Collection
         run: |
-          git add openapi.yaml index.html collection.json
+          git add Sources/openapi.yaml index.html collection.json
           git commit -am "update docs"
           git push origin gh-pages --force
