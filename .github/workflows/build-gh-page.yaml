@@ -1,0 +1,31 @@
+name: Github API Docs
+
+on: 
+  push:
+    branches:
+      - "main"
+
+jobs:
+  gh-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup Git branch
+        run: |
+          git config --global user.name 'gh pages'
+          git config --global user.email 'gh-pages@users.noreply.github.com'
+      - name: Create Docs
+        run: |
+          rm -rf *
+          git checkout Sources/openapi.yaml
+          git checkout -b gh-pages
+          npm_config_yes=true npx redoc-cli bundle Sources/openapi.yaml --output index.html
+      - name: Create Postman Collection
+        run: |
+          npm_config_yes=true npx openapi-to-postmanv2 -s Sources/openapi.yaml -o collection.json -p
+      - name: Commit Docs and Postman Collection
+        run: |
+          git add openapi.yaml index.html collection.json
+          git commit -am "update docs"
+          git push origin gh-pages --force

@@ -34,7 +34,7 @@ Resources:
           Type: HttpApi
           Properties:
             Method: get
-            Path: /pet/findByTags
+            Path: /pet/findbytags
 
   GetPetsByStatus:
     Type: AWS::Serverless::Function
@@ -45,7 +45,7 @@ Resources:
           Type: HttpApi
           Properties:
             Method: get
-            Path: /pet/findByStatus
+            Path: /pet/findbystatus
 
   UpdatePet:
     Type: AWS::Serverless::Function
@@ -58,16 +58,16 @@ Resources:
             Method: put
             Path: /pet
 
-   AddPet:
-     Type: AWS::Serverless::Function
-     Properties:
-       CodeUri: .build/plugins/AWSLambdaPackager/outputs/AWSLambdaPackager/AddPet/AddPet.zip
-       Events:
-         Api:
-           Type: HttpApi
-           Properties:
-             Method: post
-             Path: /pet
+  AddPet:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .build/plugins/AWSLambdaPackager/outputs/AWSLambdaPackager/AddPet/AddPet.zip
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Method: post
+            Path: /pet
 
 
 # print API endpoint and name of database table

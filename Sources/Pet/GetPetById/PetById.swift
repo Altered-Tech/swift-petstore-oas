@@ -17,7 +17,6 @@ struct GetPetById: APIProtocol, OpenAPILambdaHttpApi {
     }
 
     func getPetById(_ input: Operations.getPetById.Input) async throws -> Operations.getPetById.Output {
-        print("In the function")
         var petId: Int64?
         if let id: Int64 = Int64(exactly: input.path.petId) {
             petId = id
