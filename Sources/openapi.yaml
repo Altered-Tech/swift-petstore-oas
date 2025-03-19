@@ -387,19 +387,30 @@ components:
         - status
       type: object
       example:
-        id: 2
-        name: Koda
-        status: sold
-        tags:
-          - id: 0
-            name: funny
-          - id: 1
-            name: smart
-        photoUrls:
-          - "https://example.com"
-        category:
+        # - id: 2
+        #   name: Koda
+        #   status: sold
+        #   tags:
+        #     - id: 0
+        #       name: funny
+        #     - id: 1
+        #       name: smart
+        #   photoUrls:
+        #     - "https://example.com"
+        #   category:
+        #     id: 0
+        #     name: Dog
           id: 0
-          name: Dog
+          name: Arlo
+          status: available
+          tags:
+            - id: 2
+              name: Smart
+          photoUrls:
+            - "http://images4.fanpop.com/image/photos/16000000/Beautiful-Cat-cats-16096437-1280-800.jpg"
+          category:
+            id: 1
+            name: Cat
       properties:
         id:
           type: integer

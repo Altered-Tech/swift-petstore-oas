@@ -3,6 +3,8 @@
 set -e  # Exit immediately if a command exits with a non-zero status
 set -o pipefail  # Exit if any part of a pipeline fails
 
+trap 'echo "Stopping local API Gateway..."; pkill -f "sam local start-api"' EXIT
+
 echo "Building Swift package archive..."
 swift package archive --verbose --allow-network-connections docker
 
@@ -15,8 +17,20 @@ sam local start-api --template template.yml --warm-containers EAGER --disable-au
 # Give some time for the API Gateway to start
 sleep 15
 
-echo "Running Schemathesis..."
-schemathesis run ./Sources/openapi.yaml --base-url 'http://127.0.0.1:3000' --hypothesis-phases=explicit
+echo "Running Schemathesis Explicit Example test..."
+schemathesis run ./Sources/openapi.yaml --base-url 'http://127.0.0.1:3000' \
+--hypothesis-phases=explicit \
+--generation-allow-x00=false \
+--checks=all
 
-echo "Stopping local API Gateway..."
-pkill -f "sam local start-api"
+echo "Running Schemathesis Set Seed test..."
+schemathesis run ./Sources/openapi.yaml --base-url 'http://127.0.0.1:3000' \
+--hypothesis-seed=47789167578022855610497879068613925682 \
+--generation-allow-x00=false \
+--data-generation-method=all \
+--checks=all
+
+echo "Running Schemathesis Random test..."
+schemathesis run ./Sources/openapi.yaml --base-url 'http://127.0.0.1:3000' \
+--data-generation-method=all \
+--checks=all
