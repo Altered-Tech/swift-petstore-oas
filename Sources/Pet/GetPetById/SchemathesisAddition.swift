@@ -11,21 +11,42 @@
 
 import HTTPTypes
 import OpenAPIRuntime
+import Foundation
 
 extension DecodingError: @retroactive HTTPResponseConvertible {
     public var httpStatus: HTTPResponse.Status {
         switch self {
-
-        case .typeMismatch:
-                .badRequest
-        case .valueNotFound:
-                .badRequest
+        case .typeMismatch, .valueNotFound, .dataCorrupted:
+            return .badRequest
         case .keyNotFound:
-                .notFound
-        case .dataCorrupted:
-                .badRequest
+            return .notFound
         @unknown default:
-                .badRequest
+            return .badRequest
         }
+    }
+
+    public var httpBody: OpenAPIRuntime.HTTPBody? {
+        let errorMessage: String
+        switch self {
+        case .typeMismatch(let type, let context):
+            errorMessage = "Type mismatch: Expected \(type) - \(context.debugDescription)"
+        case .valueNotFound(let type, let context):
+            errorMessage = "Value not found: Expected \(type) - \(context.debugDescription)"
+        case .keyNotFound(let key, let context):
+            errorMessage = "Key not found: \(key.stringValue) - \(context.debugDescription)"
+        case .dataCorrupted(let context):
+            errorMessage = "Data corrupted: \(context.debugDescription)"
+        @unknown default:
+            errorMessage = "Unknown decoding error"
+        }
+        let errorResponse = Components.Schemas._Error(message: errorMessage, code: httpStatus.code)
+        let jsonData = try? JSONEncoder().encode(errorResponse)
+        return HTTPBody(jsonData ?? Data())
+    }
+
+    public var httpHeaderFields: HTTPTypes.HTTPFields {
+        var fields = HTTPFields()
+        fields[.contentType] = "application/json"
+        return fields
     }
 }
