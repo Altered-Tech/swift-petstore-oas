@@ -17,8 +17,7 @@ struct GetPetsByStatus: APIProtocol, OpenAPILambdaHttpApi {
     }
 
     func findPetsByStatus(_ input: Operations.findPetsByStatus.Input) async throws -> Operations.findPetsByStatus.Output {
-        let statusInput = input.query.status
-        switch statusInput {
+        switch input.query.status {
         case .available:
             let petsMatching: [Components.Schemas.Pet] = petsExample.filter { $0.status == .available }
             return .ok(.init(body: .json(petsMatching)))

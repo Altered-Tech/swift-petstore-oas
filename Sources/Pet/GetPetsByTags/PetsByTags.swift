@@ -30,6 +30,9 @@ struct GetPetsByTags: APIProtocol, OpenAPILambdaHttpApi {
                 matchingTags.contains { $0.id == petTag.id! }
             }
         }
+        if petsWithTags.isEmpty {
+            return .notFound(.init(body: .json(.init(message: "No pets found with given tags.", code: 404))))
+        }
         return .ok(.init(body: .json(petsWithTags)))
     }
 }

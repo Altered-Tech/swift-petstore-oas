@@ -16,10 +16,16 @@ https://altered-tech.github.io/swift-petstore-oas/
 
 ## Prerequisites
 
-To build this sample application, you need:
+To build this sample application on AWS, you need:
 
 - [AWS Account](https://console.aws.amazon.com/)
 - [AWS Command Line Interface (AWS CLI)](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html) - install the CLI and [configure](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) it with credentials to your AWS account
+- [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html) - a command-line tool used to create serverless workloads on AWS
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) - to compile your Swift code for Linux deployment to AWS Lambda
+- [Swift](https://www.swift.org/getting-started/) version 6.0
+
+To build for local testing, you need:
+
 - [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html) - a command-line tool used to create serverless workloads on AWS
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) - to compile your Swift code for Linux deployment to AWS Lambda
 - [Swift](https://www.swift.org/getting-started/) version 6.0
@@ -83,7 +89,7 @@ curl -X GET https://[your-api-endpoint]/pet/findByTag\?tag\={Tag}
 
 **Retrieve all Pets by Status**
 
-_Replace {Status} with the status of the pets you want to retrieve (sold, available, pending, none)_ 
+_Replace {Status} with the status of the pets you want to retrieve (sold, available, pending)_ 
 
 ```bash
 curl -X GET https://[your-api-endpoint]/pet/findByStatus\?status\={Status}
@@ -124,18 +130,19 @@ sam delete
 
 SAM also allows you to execute your Lambda functions locally on your development computer. Follow these instructions to execute each Lambda function. Further capabilities can be explored in the [SAM Documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-using-invoke.html).
 
-**Create Server**
+**Automated testing**
 
 ```
-DOCKER_HOST=unix://$HOME/.docker/run/docker.sock sam local start-api --template template.yml --disable-authorizer
+./test_locally.sh
 ```
 
-**Schemathesis for Contract Validation**
-
+**Manual testing**
 ```
-schemathesis run --checks all --generation-allow-x00=false \
-./Sources/openapi.yaml --base-url http://127.0.0.1:3000/ \
---hypothesis-seed=113557048121377334166457906999960982618
+swift package archive --allow-network-connections docker && sam build && sam local start-api --template template.yml --warm-containers EAGER --disable-authorizer
+
+or with debugging/verbose enabled
+
+swift package archive --verbose --allow-network-connections docker && sam build && sam local start-api --template template.yml --debug --warm-containers EAGER --disable-authorizer
 ```
 
 **Retrieve all Pets by Tags**

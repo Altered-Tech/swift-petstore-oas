@@ -159,7 +159,6 @@ paths:
           in: query
           description: Status values that need to be considered for filter
           required: true
-          explode: true
           example: available
           schema:
             $ref: '#/components/schemas/PetStatus'
