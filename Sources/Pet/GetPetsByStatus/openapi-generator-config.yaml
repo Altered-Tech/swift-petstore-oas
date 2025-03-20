@@ -1,7 +1,0 @@
-generate:
-  - types
-  - server
-
-filter:
-  operations:
-  - findPetsByStatus
