@@ -46,43 +46,37 @@ paths:
               $ref: '#/components/schemas/Pet'
         required: true
       responses:
-#        '200': &200Pet
-        '200':
+        '200': &200Pet
           description: Successful operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pet'
-#        '400': &400Error
-        '400':
+        '400': &400Error
           description: Bad Request Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-#        '404': &404Error
-        '404':
+        '404': &404Error
           description: Not found Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-#        '422': &422Error
-        '422':
+        '422': &422Error
           description: Validation exception
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-#        '500': &500Error
-        '500':
+        '500': &500Error
           description: Internal Server Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-#        '502': &502Error
-        '502':
+        '502': &502Error
           description: Bad Gateway Error
           content:
             application/json:
@@ -109,43 +103,6 @@ paths:
 #        '422': *422Error
 #        '500': *500Error
 #        '502': *502Error
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '400':
-          description: Bad Request Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '404':
-          description: Not found Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '422':
-          description: Validation exception
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '502':
-          description: Bad Gateway Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        
         
   /pet/findbystatus:
     get:
@@ -164,41 +121,11 @@ paths:
           schema:
             $ref: '#/components/schemas/PetStatus'
       responses:
-#        '200': &200Pets
-#        '400': *400Error
-#        '404': *404Error
-#        '500': *500Error
-#        '502': *502Error
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                  $ref: '#/components/schemas/Pets'
-        '400':
-          description: Bad Request Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '404':
-          description: Not found Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '502':
-          description: Bad Gateway Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+        '200': &200Pets
+        '400': *400Error
+        '404': *404Error
+        '500': *500Error
+        '502': *502Error
         
   /pet/findbytags:
     get:
@@ -223,41 +150,11 @@ paths:
             items:
               type: string
       responses:
-#        '200': *200Pets
-#        '400': *400Error
-#        '404': *404Error
-#        '500': *500Error
-#        '502': *502Error
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                  $ref: '#/components/schemas/Pets'
-        '400':
-          description: Bad Request Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '404':
-          description: Not found Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '502':
-          description: Bad Gateway Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+        '200': *200Pets
+        '400': *400Error
+        '404': *404Error
+        '500': *500Error
+        '502': *502Error
         
   /pet/{petId}:
     get:
@@ -276,41 +173,11 @@ paths:
             type: integer
             format: int64
       responses:
-#        '200': *200Pet
-#        '400': *400Error
-#        '404': *404Error
-#        '500': *500Error
-#        '502': *502Error
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Bad Request Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '404':
-          description: Not found Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '502':
-          description: Bad Gateway Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+        '200': *200Pet
+        '400': *400Error
+        '404': *404Error
+        '500': *500Error
+        '502': *502Error
         
 components:
   schemas:
