@@ -97,12 +97,12 @@ paths:
               $ref: '#/components/schemas/Pet'
         required: true
       responses:
-#        '200': *200Pet
-#        '400': *400Error
-#        '404': *404Error
-#        '422': *422Error
-#        '500': *500Error
-#        '502': *502Error
+        '200': *200Pet
+        '400': *400Error
+        '404': *404Error
+        '422': *422Error
+        '500': *500Error
+        '502': *502Error
         
   /pet/findbystatus:
     get:
@@ -122,6 +122,11 @@ paths:
             $ref: '#/components/schemas/PetStatus'
       responses:
         '200': &200Pets
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pets'
         '400': *400Error
         '404': *404Error
         '500': *500Error
