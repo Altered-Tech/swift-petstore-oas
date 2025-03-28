@@ -43,5 +43,39 @@ jobs:
       - name: Start local API Gateway
         run: sam local start-api --template template.yml --disable-authorizer 2>&1 | tee sam_logs.txt
 
+      - name: Wait for API to be Ready
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:3000 >/dev/null; then
+              echo "API is ready"
+              exit 0
+            fi
+            echo "Waiting for API..."
+            sleep 5
+          done
+          echo "API failed to start"
+          exit 1
+
+      - name: Run Schemathesis Tests
+        run: |
+          schemathesis run ./Sources/openapi.yaml --base-url 'http://localhost:3000' \
+          --hypothesis-phases=explicit \
+          --generation-allow-x00=false \
+          --checks=all
+
+      - name: Run Schemathesis Tests
+        run: |
+          schemathesis run ./Sources/openapi.yaml --base-url 'http://localhost:3000' \
+          --hypothesis-seed=47789167578022855610497879068613925682 \
+          --generation-allow-x00=false \
+          --data-generation-method=all \
+          --checks=all
+
+      - name: Run Schemathesis Tests
+        run: |
+          schemathesis run ./Sources/openapi.yaml --base-url 'http://localhost:3000' \
+          --data-generation-method=all \
+          --checks=all
+
       - name: Stop SAM Local
         run: pkill -f "sam local start-api"
