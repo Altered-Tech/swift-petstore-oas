@@ -439,3 +439,16 @@ components:
         - available
         - pending
         - sold
+    
+    Discount:
+      type: object
+      description: Discount on purchase
+      properties:
+        percentage:
+          type: integer
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
